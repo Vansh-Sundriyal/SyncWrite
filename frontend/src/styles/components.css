@@ -1,0 +1,126 @@
+/* ---------- Buttons ---------- */
+
+.primary-btn {
+  background: var(--primary);
+  color: #faf7f2;
+
+  border: none;
+
+  border-radius: var(--radius-sm);
+
+  padding: 0.8rem 1.4rem;
+
+  font-size: 0.95rem;
+
+  font-weight: 600;
+
+  transition: all var(--transition);
+
+  box-shadow: var(--shadow-sm);
+}
+
+.primary-btn:hover {
+  background: var(--primary-hover);
+
+  transform: translateY(-2px);
+
+  box-shadow: var(--shadow-md);
+}
+
+.primary-btn:active {
+  transform: scale(.98);
+}
+
+.primary-btn:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+.primary-btn.small {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.85rem;
+}
+
+
+
+.ghost-btn {
+
+    background: transparent;
+
+    color: var(--text-main);
+
+    border: 1px solid var(--border);
+
+    padding: .75rem 1.2rem;
+
+    border-radius: var(--radius-sm);
+
+    transition: all var(--transition);
+}
+
+.ghost-btn:hover {
+
+    background: rgba(123,85,60,.08);
+
+    border-color: var(--primary);
+
+    color: var(--primary);
+}
+}
+
+/* ---------- Brand ---------- */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.brand-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: var(--accent);
+  color: white;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-name {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: var(--ink);
+}
+
+/* ---------- Avatar ---------- */
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  font-weight: 700;
+
+  color: white;
+
+  background: linear-gradient(
+    145deg,
+    #6f5038,
+    #a77954
+  );
+
+  box-shadow: var(--shadow-sm);
+
+  user-select: none;
+
+  flex-shrink: 0;
+}
+
+
+
+
+

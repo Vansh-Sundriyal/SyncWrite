@@ -1,0 +1,77 @@
+/* ---------- Auth pages ---------- */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #f7f5fc 0%, var(--paper) 100%);
+  padding: 1rem;
+}
+
+.auth-card {
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid var(--line);
+}
+
+.auth-card h1 {
+  font-size: 1.6rem;
+  margin-top: 1.5rem;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin: 0.4rem 0 1.6rem;
+}
+
+.auth-card form {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-card label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  margin-top: 0.9rem;
+}
+
+.auth-card input {
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border 0.15s ease;
+}
+
+.auth-card input:focus {
+  border-color: var(--accent);
+}
+
+.auth-card .primary-btn {
+  margin-top: 1.6rem;
+}
+
+.switch-text {
+  text-align: center;
+  margin-top: 1.5rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.switch-text a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.error-text {
+  color: var(--danger);
+  font-size: 0.85rem;
+  margin: 0.8rem 0 0;
+}

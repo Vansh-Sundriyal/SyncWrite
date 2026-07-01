@@ -34,13 +34,19 @@ function Editor({ user }) {
       const html = editor.getHTML();
 
       // Tell everyone else in the room right away, so it feels instant
-      socketRef.current?.emit("send-changes", { documentId: id, content: html });
+      socketRef.current?.emit("send-changes", {
+        documentId: id,
+        content: html,
+      });
 
       // But only save to the database after the user pauses typing
       setSaveStatus("Saving...");
       clearTimeout(saveTimeout.current);
       saveTimeout.current = setTimeout(() => {
-        socketRef.current?.emit("save-document", { documentId: id, content: html });
+        socketRef.current?.emit("save-document", {
+          documentId: id,
+          content: html,
+        });
         setSaveStatus("Saved");
       }, SAVE_DELAY);
     },
@@ -102,31 +108,41 @@ function Editor({ user }) {
     e.preventDefault();
     setShareMessage("");
     try {
-      const res = await api.post(`/documents/${id}/share`, { email: shareEmail });
+      const res = await api.post(`/documents/${id}/share`, {
+        email: shareEmail,
+      });
       setShareMessage(res.data.message);
       setShareEmail("");
     } catch (err) {
-      setShareMessage(err.response?.data?.message || "Could not share document.");
+      setShareMessage(
+        err.response?.data?.message || "Could not share document.",
+      );
     }
   }
 
   return (
     <div className="editor-page">
       <header className="editor-header">
-        <button className="ghost-btn" onClick={() => navigate("/")}>
-          ← Back
-        </button>
+        <div className="editor-left">
+          <button className="ghost-btn" onClick={() => navigate("/")}>
+            ← Back
+          </button>
 
-        <input
-          className="title-input"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          onBlur={handleTitleBlur}
-        />
+          <input
+            className="title-input"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            onBlur={handleTitleBlur}
+          />
+        </div>
 
-        <div className="header-right">
+        <div className="editor-right">
           <span className="save-status">{saveStatus}</span>
-          <button className="primary-btn small" onClick={() => setShowShareBox(!showShareBox)}>
+
+          <button
+            className="primary-btn small"
+            onClick={() => setShowShareBox(!showShareBox)}
+          >
             Share
           </button>
         </div>
@@ -173,13 +189,17 @@ function Editor({ user }) {
           <span className="toolbar-divider" />
           <button
             className={editor.isActive("heading", { level: 1 }) ? "active" : ""}
-            onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 1 }).run()
+            }
           >
             H1
           </button>
           <button
             className={editor.isActive("heading", { level: 2 }) ? "active" : ""}
-            onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 2 }).run()
+            }
           >
             H2
           </button>

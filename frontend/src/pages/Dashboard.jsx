@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api.js";
+import DashboardHeader from "../components/dashboard/DashboardHeader";
+import DashboardStats from "../components/dashboard/DashboardStats";
+import DocumentListItem from "../components/dashboard/DocumentListItem";
+import SearchBar from "../components/dashboard/SearchBar";
 
 function Dashboard({ user, onLogout }) {
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
+  // Keeps searching responsive without extra backend requests.
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,72 +47,108 @@ function Dashboard({ user, onLogout }) {
     }
   }
 
-  function formatDate(dateStr) {
-    return new Date(dateStr).toLocaleDateString(undefined, {
+  // Display last edited time.
+  function formatRelativeDate(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+
+    const diff = now - date;
+
+    const minutes = Math.floor(diff / (1000 * 60));
+
+    if (minutes < 1) return "Edited just now";
+
+    if (minutes < 60)
+      return `Edited ${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+
+    const hours = Math.floor(minutes / 60);
+
+    if (hours < 24) return `Edited ${hours} hour${hours > 1 ? "s" : ""} ago`;
+
+    const days = Math.floor(hours / 24);
+
+    if (days === 1) return "Edited yesterday";
+
+    if (days < 7) return `Edited ${days} days ago`;
+
+    return `Edited ${date.toLocaleDateString(undefined, {
       month: "short",
       day: "numeric",
       year: "numeric",
-    });
+    })}`;
   }
+
+  // Filter documents on the client for a smooth search experience.
+  const filteredDocuments = documents.filter((doc) =>
+    doc.title.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
 
   return (
     <div className="dashboard">
-      <header className="dashboard-header">
-        <div className="brand">
-          <span className="brand-mark">S</span>
-          <span className="brand-name">SyncWrite</span>
-        </div>
-        <div className="header-right">
-          <span className="user-greeting">Hi, {user.name.split(" ")[0]}</span>
-          <button className="ghost-btn" onClick={onLogout}>
-            Log out
-          </button>
-        </div>
-      </header>
+      <div className="dashboard-shell">
+        {/* Top navigation */}
+        <DashboardHeader user={user} onLogout={onLogout} />
 
-      <main className="dashboard-main">
-        <div className="dashboard-toolbar">
-          <h1>Your Documents</h1>
-          <button className="primary-btn" onClick={handleCreate}>
-            + New Document
-          </button>
-        </div>
+        <main className="dashboard-main">
+          {/* Quick overview */}
+          <DashboardStats documents={documents} userId={user.id} />
 
-        {loading && <p className="muted">Loading your documents...</p>}
+          {/* Documents section */}
+          <section className="documents-section">
+            <div className="dashboard-toolbar">
+              <div className="dashboard-toolbar-left">
+                <h1>Workspace</h1>
 
-        {!loading && documents.length === 0 && (
-          <div className="empty-state">
-            <p>You don't have any documents yet.</p>
-            <p className="muted">Create your first document to start writing.</p>
-          </div>
-        )}
+                <p className="muted">
+                  {documents.length} document
+                  {documents.length !== 1 ? "s" : ""}
+                </p>
+              </div>
 
-        <div className="document-grid">
-          {documents.map((doc) => (
-            <div key={doc._id} className="document-card" onClick={() => navigate(`/document/${doc._id}`)}>
-              <div className="document-card-icon">📄</div>
-              <h3>{doc.title}</h3>
-              <p className="muted small">
-                {doc.owner?._id === user.id ? "Owned by you" : `Shared by ${doc.owner?.name}`}
-              </p>
-              <p className="muted small">Updated {formatDate(doc.updatedAt)}</p>
-
-              {doc.owner?._id === user.id && (
-                <button
-                  className="delete-btn"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDelete(doc._id);
-                  }}
-                  title="Delete document"
-                >
-                  🗑
-                </button>
-              )}
+              <button className="primary-btn" onClick={handleCreate}>
+                + New Document
+              </button>
             </div>
-          ))}
-        </div>
-      </main>
+
+            <SearchBar value={searchQuery} onChange={setSearchQuery} />
+
+            {loading && <p className="muted">Loading your documents...</p>}
+
+            {!loading &&
+              filteredDocuments.length === 0 &&
+              documents.length > 0 && (
+                <div className="empty-state">
+                  <lord-icon
+                    src="https://cdn.lordicon.com/msoeawqm.json"
+                    trigger="loop"
+                    style={{
+                      width: "90px",
+                      height: "90px",
+                    }}
+                  />
+
+                  <h3>No matching documents</h3>
+
+                  <p className="muted">Try searching with another keyword.</p>
+                </div>
+              )}
+
+            {!loading && filteredDocuments.length > 0 && (
+              <div className="document-list">
+                {filteredDocuments.map((doc) => (
+                  <DocumentListItem
+                    key={doc._id}
+                    document={doc}
+                    userId={user.id}
+                    formatDate={formatRelativeDate}
+                    onDelete={handleDelete}
+                  />
+                ))}
+              </div>
+            )}
+          </section>
+        </main>
+      </div>
     </div>
   );
 }
