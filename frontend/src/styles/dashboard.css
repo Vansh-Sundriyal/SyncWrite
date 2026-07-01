@@ -425,32 +425,30 @@
   opacity: 1;
 }
 
-.icon-btn{
+.icon-btn {
+  width: 42px;
 
-    width:42px;
+  height: 42px;
 
-    height:42px;
+  display: flex;
 
-    display:flex;
+  align-items: center;
 
-    align-items:center;
+  justify-content: center;
 
-    justify-content:center;
+  padding: 0;
 
-    padding:0;
-
-    border-radius:12px;
+  border-radius: 12px;
 }
 
 .icon-btn:hover {
+  transform: translateY(-2px);
 
-    transform: translateY(-2px);
+  border-color: var(--primary);
 
-    border-color: var(--primary);
+  background: rgba(106, 74, 51, 0.08);
 
-    background: rgba(106, 74, 51, 0.08);
-
-    box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-sm);
 }
 
 .icon-btn.danger:hover {
@@ -537,4 +535,16 @@
 
 .search-bar input::placeholder {
   color: var(--text-muted);
+}
+
+.profile-avatar {
+  cursor: pointer;
+
+  border-radius: 50%;
+
+  transition: transform 0.18s ease;
+}
+
+.profile-avatar:hover {
+  transform: scale(1.08);
 }

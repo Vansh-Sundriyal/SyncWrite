@@ -5,12 +5,15 @@ import DashboardHeader from "../components/dashboard/DashboardHeader";
 import DashboardStats from "../components/dashboard/DashboardStats";
 import DocumentListItem from "../components/dashboard/DocumentListItem";
 import SearchBar from "../components/dashboard/SearchBar";
+import ProfileModal from "../components/profile/ProfileModal";
 
 function Dashboard({ user, onLogout }) {
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
   // Keeps searching responsive without extra backend requests.
   const [searchQuery, setSearchQuery] = useState("");
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [currentUser, setCurrentUser] = useState(user);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -87,11 +90,15 @@ function Dashboard({ user, onLogout }) {
     <div className="dashboard">
       <div className="dashboard-shell">
         {/* Top navigation */}
-        <DashboardHeader user={user} onLogout={onLogout} />
+        <DashboardHeader
+          user={currentUser}
+          onLogout={onLogout}
+          onProfileClick={() => setShowProfileModal(true)}
+        />
 
         <main className="dashboard-main">
           {/* Quick overview */}
-          <DashboardStats documents={documents} userId={user.id} />
+          <DashboardStats documents={documents} userId={currentUser.id} />
 
           {/* Documents section */}
           <section className="documents-section">
@@ -139,7 +146,7 @@ function Dashboard({ user, onLogout }) {
                   <DocumentListItem
                     key={doc._id}
                     document={doc}
-                    userId={user.id}
+                    userId={currentUser.id}
                     formatDate={formatRelativeDate}
                     onDelete={handleDelete}
                   />
@@ -148,6 +155,13 @@ function Dashboard({ user, onLogout }) {
             )}
           </section>
         </main>
+        {showProfileModal && (
+          <ProfileModal
+            user={currentUser}
+            onClose={() => setShowProfileModal(false)}
+            onUserUpdate={setCurrentUser}
+          />
+        )}
       </div>
     </div>
   );
