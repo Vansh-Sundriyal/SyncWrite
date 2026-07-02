@@ -4,21 +4,18 @@ import api from "../../api";
 
 function ProfileModal({ user, onClose, onUserUpdate }) {
   const [name, setName] = useState(user.name);
-
   const [currentPassword, setCurrentPassword] = useState("");
-
   const [newPassword, setNewPassword] = useState("");
 
   async function handleUpdateName() {
+    if (name.trim() === user.name) return;
+
     try {
       const res = await api.put("/auth/profile", {
-        name,
+        name: name.trim(),
       });
 
-      // Update the user in the parent component.
       onUserUpdate(res.data.user);
-
-      // Keep localStorage in sync.
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
       alert("Profile updated successfully.");
@@ -44,18 +41,24 @@ function ProfileModal({ user, onClose, onUserUpdate }) {
   }
 
   return createPortal(
-    <div className="modal-overlay" onClick={onClose}>
-      {/* Prevent clicks inside the modal from closing it. */}
-      <div className="profile-modal" onClick={(e) => e.stopPropagation()}>
+    <div
+      className="modal-overlay"
+      onClick={onClose}
+    >
+      <div
+        className="profile-modal"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="profile-modal-header">
           <h2>Profile Settings</h2>
 
-          <button className="modal-close-btn" onClick={onClose}>
+          <button
+            className="modal-close-btn"
+            onClick={onClose}
+          >
             ✕
           </button>
         </div>
-
-        {/* -------- Profile -------- */}
 
         <section className="profile-section">
           <h3>Display Name</h3>
@@ -63,16 +66,18 @@ function ProfileModal({ user, onClose, onUserUpdate }) {
           <input
             className="profile-input"
             type="text"
+            autoComplete="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
 
-          <button className="primary-btn" onClick={handleUpdateName}>
+          <button
+            className="primary-btn"
+            onClick={handleUpdateName}
+          >
             Update Name
           </button>
         </section>
-
-        {/* -------- Password -------- */}
 
         <section className="profile-section">
           <h3>Change Password</h3>
@@ -80,20 +85,29 @@ function ProfileModal({ user, onClose, onUserUpdate }) {
           <input
             className="profile-input"
             type="password"
+            autoComplete="current-password"
             placeholder="Current password"
             value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
+            onChange={(e) =>
+              setCurrentPassword(e.target.value)
+            }
           />
 
           <input
             className="profile-input"
             type="password"
+            autoComplete="new-password"
             placeholder="New password"
             value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
+            onChange={(e) =>
+              setNewPassword(e.target.value)
+            }
           />
 
-          <button className="primary-btn" onClick={handleChangePassword}>
+          <button
+            className="primary-btn"
+            onClick={handleChangePassword}
+          >
             Change Password
           </button>
         </section>

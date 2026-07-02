@@ -1,128 +1,256 @@
-# SyncWrite — Real-Time Collaborative Document Editor
+# SyncWrite
 
-A simple Google-Docs-style app where multiple logged-in users can edit the
-same document at the same time and see each other's changes instantly.
+<p align="center">
+  <img src="./screenshots/dashboard.png" alt="SyncWrite Dashboard" width="100%">
+</p>
 
-**Stack:** React (Vite) + Tiptap · Node.js + Express · MongoDB · Socket.IO · JWT + bcrypt
+<p align="center">
 
----
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)
+![Node.js](https://img.shields.io/badge/Node.js-Express-339933?logo=node.js)
+![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?logo=mongodb)
+![Socket.IO](https://img.shields.io/badge/Socket.IO-Realtime-black?logo=socket.io)
+![JWT](https://img.shields.io/badge/Auth-JWT-orange)
 
-## 1. What you need installed first
+</p>
 
-- **Node.js** (v18 or newer) → https://nodejs.org
-- **MongoDB Community Server** running locally → https://www.mongodb.com/try/download/community
-  - After installing, make sure it's running. On most systems:
-    - Windows: it usually runs automatically as a service
-    - Mac (Homebrew): `brew services start mongodb-community`
-    - Linux: `sudo systemctl start mongod`
-  - You can check it's working by running `mongosh` in a terminal — if it connects, you're good.
+A full-stack **real-time collaborative document editor** built using **React, Node.js, Express, MongoDB Atlas, Socket.IO, and Tiptap**.
 
----
-
-## 2. Project structure
-
-```
-syncwrite/
-  backend/    → Express API + Socket.IO server (runs on http://localhost:5000)
-  frontend/   → React app (runs on http://localhost:5173)
-```
+SyncWrite allows users to create, edit, and share rich-text documents while collaborating in real time. It includes secure authentication, document sharing, automatic saving, and a responsive interface designed for both desktop and mobile devices.
 
 ---
 
-## 3. Backend setup
+# Live Demo
 
-Open a terminal in the `backend` folder:
+### Frontend
 
-```bash
-cd syncwrite/backend
-npm install
-```
+https://syncwriteapp.vercel.app
 
-Now create your environment file:
+### Backend
 
-```bash
-cp .env.example .env
-```
-
-Open `.env` and check the values — the defaults already work for a normal
-local MongoDB install, so you usually don't need to change anything:
-
-```
-MONGO_URI=mongodb://127.0.0.1:27017/syncwrite
-JWT_SECRET=this_is_a_super_secret_key_change_me
-PORT=5000
-```
-
-Start the backend server:
-
-```bash
-npm start
-```
-
-You should see:
-```
-✅ Connected to MongoDB
-🚀 Server running on http://localhost:5000
-```
-
-Leave this terminal running.
+https://syncwrite-api.onrender.com
 
 ---
 
-## 4. Frontend setup
+# Features
 
-Open a **second** terminal in the `frontend` folder:
+- Secure user authentication using JWT
+- User registration and login
+- Rich text editor powered by Tiptap
+- Real-time collaboration using Socket.IO
+- Automatic document saving
+- Create, rename and delete documents
+- Share documents with collaborators
+- Protected routes and authorization
+- Update profile information
+- Change account password
+- Responsive UI for desktop and mobile
+
+---
+
+# Tech Stack
+
+## Frontend
+
+- React
+- React Router
+- Axios
+- Tiptap
+- Socket.IO Client
+- CSS
+
+## Backend
+
+- Node.js
+- Express.js
+- MongoDB Atlas
+- Mongoose
+- JWT Authentication
+- bcryptjs
+- Socket.IO
+
+## Deployment
+
+- Vercel
+- Render
+- MongoDB Atlas
+
+---
+
+# Screenshots
+
+## Dashboard
+
+<p align="center">
+<img src="./screenshots/dashboard.png" width="100%">
+</p>
+
+---
+
+## Editor
+
+<p align="center">
+<img src="./screenshots/editor.png" width="100%">
+</p>
+
+---
+
+## Profile Settings
+
+<p align="center">
+<img src="./screenshots/profile-settings.png" width="100%">
+</p>
+
+---
+
+## Share Document
+
+<p align="center">
+<img src="./screenshots/share-document.png" width="100%">
+</p>
+
+---
+
+## Search
+
+<p align="center">
+<img src="./screenshots/search.png" width="100%">
+</p>
+
+---
+
+## Authentication & Mobile
+
+<table>
+<tr>
+<td align="center">
+
+### Login
+
+<img src="./screenshots/login-page.png" width="260"/>
+
+</td>
+
+<td align="center">
+
+### Register
+
+<img src="./screenshots/register-page.png" width="260"/>
+
+</td>
+
+<td align="center">
+
+### Mobile
+
+<img src="./screenshots/mobile-dashboard.png" width="260"/>
+
+</td>
+</tr>
+</table>
+---
+
+# Project Structure
+
+```text
+SyncWrite
+│
+├── backend
+│   ├── middleware
+│   ├── models
+│   ├── routes
+│   ├── server.js
+│   └── package.json
+│
+├── frontend
+│   ├── public
+│   ├── src
+│   └── package.json
+│
+└── README.md
+```
+
+---
+
+# Installation
+
+## Clone Repository
 
 ```bash
-cd syncwrite/frontend
+git clone https://github.com/vansh-sundriyal/SyncWrite.git
+```
+
+---
+
+## Backend
+
+```bash
+cd backend
 npm install
 npm run dev
 ```
 
-You should see something like:
+---
+
+## Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
 ```
-  ➜  Local:   http://localhost:5173/
+
+---
+
+# Environment Variables
+
+## Backend (.env)
+
+```env
+MONGO_URI=your_mongodb_connection_string
+
+JWT_SECRET=your_secret_key
+
+CLIENT_URL=http://localhost:5173
 ```
 
-Open that link in your browser.
+---
+
+## Frontend (.env)
+
+```env
+VITE_API_URL=http://localhost:5000/api
+
+VITE_SOCKET_URL=http://localhost:5000
+```
 
 ---
 
-## 5. Try it out
+# REST API
 
-1. Go to **http://localhost:5173** → you'll land on the login page.
-2. Click **Sign up** and create an account.
-3. Click **+ New Document** to create your first document.
-4. Click **Share**, and type another user's email to give them access
-   (you'll need to register a second account, e.g. in an incognito window,
-   to test real-time collaboration).
-5. Open the same document in two different browser windows (logged in as
-   two different users) — start typing in one and watch it appear in the other!
-
----
-
-## 6. How it works (short version)
-
-- **Auth:** Passwords are hashed with `bcryptjs` before being saved. On
-  login, the server signs a JWT token that the frontend stores and sends
-  with every request.
-- **Documents:** Stored in MongoDB with an `owner` and a list of
-  `collaborators`. Only people with access can open a document.
-- **Real-time sync:** When you open a document, the frontend joins a
-  Socket.IO "room" named after that document's ID. Every keystroke change
-  is broadcast instantly to everyone else in the same room, and the full
-  content is saved to MongoDB a second after you stop typing.
-- **Editor:** The `Tiptap` rich-text editor powers the actual writing
-  experience (bold, italic, headings, lists, quotes).
+| Method | Endpoint | Description |
+|----------|-----------------------------|-------------------------|
+| POST | `/api/auth/register` | Register a new user |
+| POST | `/api/auth/login` | Login |
+| PUT | `/api/auth/profile` | Update profile |
+| PUT | `/api/auth/change-password` | Change password |
+| GET | `/api/documents` | Get all documents |
+| POST | `/api/documents` | Create document |
+| GET | `/api/documents/:id` | Get document |
+| PUT | `/api/documents/:id` | Rename document |
+| POST | `/api/documents/:id/share` | Share document |
+| DELETE | `/api/documents/:id` | Delete document |
 
 ---
 
-## 7. Common issues
+# Socket Events
 
-- **"Could not connect to MongoDB"** → make sure MongoDB is actually
-  running locally (see step 1).
-- **CORS or socket errors in the browser console** → make sure the backend
-  is running on port 5000 and the frontend on port 5173 (the defaults).
-- **Changes not syncing between windows** → make sure both windows are
-  logged in as users who have access to that document, and both are
-  looking at the same document URL.
+| Event | Description |
+|---------|------------------------------|
+| join-document | Join a document room |
+| load-document | Load saved content |
+| send-changes | Broadcast edits |
+| receive-changes | Receive edits |
+| save-document | Persist document |
+
+---

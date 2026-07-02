@@ -1,4 +1,5 @@
-/* ---------- Editor ---------- */
+/* Editor */
+
 .editor-page {
   min-height: 100vh;
   display: flex;
@@ -9,42 +10,43 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   gap: 1rem;
-
   padding: 1rem 1.5rem;
-
   background: var(--bg-card);
-
   border-bottom: 1px solid var(--border);
+}
+
+.editor-left {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  gap: 1rem;
+}
+
+.editor-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
 }
 
 .title-input {
   flex: 1;
-
   min-width: 0;
-
-  border: none;
-
-  outline: none;
-
   background: transparent;
-
-  font-size: 1.25rem;
-
-  font-weight: 600;
-
+  border: none;
+  outline: none;
   color: var(--text-main);
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-
+  font-size: 1.25rem;
+  font-weight: 600;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.title-input:focus,
-.title-input:hover {
+.title-input:hover,
+.title-input:focus {
   background: var(--accent-light);
 }
 
@@ -54,8 +56,8 @@
 }
 
 .share-box {
-  background: var(--accent-light);
   padding: 1rem 1.5rem;
+  background: var(--accent-light);
   border-bottom: 1px solid var(--line);
 }
 
@@ -75,25 +77,15 @@
 
 .toolbar {
   display: flex;
-
   align-items: center;
-
   gap: 0.4rem;
-
-  overflow-x: auto;
-
-  overflow-y: hidden;
-
-  white-space: nowrap;
-
   flex-wrap: nowrap;
-
+  overflow-x: auto;
+  overflow-y: hidden;
   padding: 0.8rem 1.25rem;
-
   background: var(--bg-card);
-
   border-bottom: 1px solid var(--border);
-
+  white-space: nowrap;
   scrollbar-width: none;
 }
 
@@ -102,9 +94,9 @@
 }
 
 .toolbar button {
+  padding: 0.4rem 0.7rem;
   background: transparent;
   color: var(--ink);
-  padding: 0.4rem 0.7rem;
   border-radius: 6px;
   font-size: 0.85rem;
   font-weight: 600;
@@ -116,59 +108,57 @@
 
 .toolbar button.active {
   background: var(--accent);
-  color: white;
+  color: #fff;
 }
 
 .toolbar-divider {
   width: 1px;
   height: 20px;
-  background: var(--line);
   margin: 0 0.4rem;
+  background: var(--line);
 }
 
 .editor-wrapper {
-  flex: 1;
-
   display: flex;
-
   justify-content: center;
-
+  flex: 1;
   padding: 2rem;
-
   background: #f4efe6;
 }
+
 .editor-content {
   width: 100%;
   max-width: 760px;
-  background: white;
+  min-height: 70vh;
+  padding: 3rem;
+  background: #fff;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  padding: 3rem;
-  min-height: 70vh;
 }
 
 .editor-content .ProseMirror {
   outline: none;
-  line-height: 1.7;
   font-size: 1.02rem;
+  line-height: 1.7;
 }
 
 .editor-content .ProseMirror h1 {
-  font-size: 1.8rem;
   margin: 1rem 0 0.5rem;
+  font-size: 1.8rem;
 }
 
 .editor-content .ProseMirror h2 {
-  font-size: 1.4rem;
   margin: 1rem 0 0.5rem;
+  font-size: 1.4rem;
 }
 
 .editor-content .ProseMirror blockquote {
-  border-left: 3px solid var(--accent);
   margin: 1rem 0;
   padding-left: 1rem;
   color: var(--muted);
+  border-left: 3px solid var(--accent);
 }
+
 @media (max-width: 768px) {
   .editor-header {
     padding: 0.85rem 1rem;
@@ -192,9 +182,7 @@
 
   .editor-content {
     max-width: none;
-
     min-height: calc(100vh - 220px);
-
     padding: 1.3rem;
   }
 
@@ -208,53 +196,28 @@
 
   .share-box form {
     flex-direction: column;
-
     max-width: none;
   }
 }
 
-@media (max-width:480px){
+@media (max-width: 480px) {
+  .editor-header {
+    gap: 0.5rem;
+  }
 
-.editor-header{
+  .editor-left {
+    gap: 0.5rem;
+  }
 
-    gap:.5rem;
-}
+  .ghost-btn {
+    padding: 0.6rem 0.8rem;
+  }
 
-.editor-left{
+  .title-input {
+    font-size: 0.95rem;
+  }
 
-    gap:.5rem;
-}
-
-.ghost-btn{
-
-    padding:.6rem .8rem;
-}
-
-.title-input{
-
-    font-size:.95rem;
-}
-
-.primary-btn.small{
-
-    padding:.55rem .9rem;
-}
-
-}
-
-.editor-left {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-
-  flex: 1;
-  min-width: 0;
-}
-
-.editor-right {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-
-  flex-shrink: 0;
+  .primary-btn.small {
+    padding: 0.55rem 0.9rem;
+  }
 }

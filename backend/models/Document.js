@@ -7,15 +7,18 @@ const documentSchema = new mongoose.Schema(
       default: "Untitled Document",
       trim: true,
     },
+
     content: {
-      type: String, // we store the editor content as an HTML string (Tiptap gives us this easily)
+      type: String,
       default: "",
     },
+
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
+
     collaborators: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -23,7 +26,12 @@ const documentSchema = new mongoose.Schema(
       },
     ],
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  },
 );
 
-module.exports = mongoose.model("Document", documentSchema);
+module.exports = mongoose.model(
+  "Document",
+  documentSchema,
+);

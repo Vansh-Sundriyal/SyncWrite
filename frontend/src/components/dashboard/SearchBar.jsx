@@ -1,7 +1,6 @@
 function SearchBar({ value, onChange }) {
   return (
     <div className="search-bar">
-      {/* Decorative search icon */}
       <lord-icon
         src="https://cdn.lordicon.com/wjyqkiew.json"
         trigger="hover"
@@ -13,6 +12,7 @@ function SearchBar({ value, onChange }) {
 
       <input
         type="text"
+        aria-label="Search documents"
         placeholder="Search your workspace..."
         value={value}
         onChange={(e) => onChange(e.target.value)}

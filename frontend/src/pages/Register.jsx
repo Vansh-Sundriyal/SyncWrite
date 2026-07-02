@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../api.js";
+import api from "../api";
 
 function Register({ onLogin }) {
   const [name, setName] = useState("");
@@ -8,15 +8,22 @@ function Register({ onLogin }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
+
     setError("");
     setLoading(true);
 
     try {
-      const res = await api.post("/auth/register", { name, email, password });
+      const res = await api.post("/auth/register", {
+        name: name.trim(),
+        email: email.trim(),
+        password,
+      });
+
       onLogin(res.data.user, res.data.token);
       navigate("/");
     } catch (err) {
@@ -33,47 +40,66 @@ function Register({ onLogin }) {
           <span className="brand-mark">S</span>
           <span className="brand-name">SyncWrite</span>
         </div>
+
         <h1>Create your account</h1>
-        <p className="subtitle">Start writing together in seconds.</p>
+
+        <p className="subtitle">
+          Start writing together in seconds.
+        </p>
 
         <form onSubmit={handleSubmit}>
           <label>Full name</label>
+
           <input
             type="text"
+            placeholder="Jane Doe"
+            autoComplete="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Jane Doe"
             required
           />
 
           <label>Email</label>
+
           <input
             type="email"
+            placeholder="you@example.com"
+            autoComplete="email"
+            autoCapitalize="none"
+            spellCheck={false}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
             required
           />
 
           <label>Password</label>
+
           <input
             type="password"
+            placeholder="At least 6 characters"
+            autoComplete="new-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="At least 6 characters"
-            required
             minLength={6}
+            required
           />
 
           {error && <p className="error-text">{error}</p>}
 
-          <button type="submit" className="primary-btn" disabled={loading}>
-            {loading ? "Creating account..." : "Sign Up"}
+          <button
+            type="submit"
+            className="primary-btn"
+            disabled={loading}
+          >
+            {loading
+              ? "Creating account..."
+              : "Sign Up"}
           </button>
         </form>
 
         <p className="switch-text">
-          Already have an account? <Link to="/login">Log in</Link>
+          Already have an account?{" "}
+          <Link to="/login">Log in</Link>
         </p>
       </div>
     </div>

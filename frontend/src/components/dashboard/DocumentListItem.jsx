@@ -11,22 +11,23 @@ function DocumentListItem({
 
   const isOwner = document.owner?._id === userId;
 
+  function openDocument() {
+    navigate(`/document/${document._id}`);
+  }
+
   function handleRename() {
-    const newTitle = prompt("Rename document", document.title);
+    const newTitle = prompt("Rename document", document.title)?.trim();
 
     if (!newTitle) return;
 
-    if (newTitle.trim() === "") return;
-
-    onRename(document._id, newTitle.trim());
+    onRename(document._id, newTitle);
   }
 
   return (
     <article
       className="document-item"
-      onClick={() => navigate(`/document/${document._id}`)}
+      onClick={openDocument}
     >
-      {/* Document icon */}
       <div className="document-icon document-icon-wrapper">
         <lord-icon
           src="https://cdn.lordicon.com/fikcyfpp.json"
@@ -38,24 +39,28 @@ function DocumentListItem({
         />
       </div>
 
-      {/* Main document information */}
       <div className="document-info">
         <h3>{document.title}</h3>
 
         <p className="muted">
-          {isOwner ? "Owned by you" : `Shared by ${document.owner?.name}`}
+          {isOwner
+            ? "Owned by you"
+            : `Shared by ${document.owner?.name}`}
         </p>
 
-        <span className="document-date">{formatDate(document.updatedAt)}</span>
+        <span className="document-date">
+          {formatDate(document.updatedAt)}
+        </span>
       </div>
 
-      {/* Right side actions */}
-      <div className="document-actions" onClick={(e) => e.stopPropagation()}>
-        {/* Open */}
+      <div
+        className="document-actions"
+        onClick={(e) => e.stopPropagation()}
+      >
         <button
           className="icon-btn"
           title="Open"
-          onClick={() => navigate(`/document/${document._id}`)}
+          onClick={openDocument}
         >
           <lord-icon
             src="https://cdn.lordicon.com/tsrgicte.json"
@@ -69,8 +74,11 @@ function DocumentListItem({
 
         {isOwner && (
           <>
-            {/* Rename */}
-            <button className="icon-btn" title="Rename" onClick={handleRename}>
+            <button
+              className="icon-btn"
+              title="Rename"
+              onClick={handleRename}
+            >
               <lord-icon
                 src="https://cdn.lordicon.com/exymduqj.json"
                 trigger="hover"
@@ -81,7 +89,6 @@ function DocumentListItem({
               />
             </button>
 
-            {/* Delete */}
             <button
               className="icon-btn"
               title="Delete"

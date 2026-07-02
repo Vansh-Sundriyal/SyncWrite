@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-// A very simple user schema: name, unique email, and a hashed password
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -8,6 +7,7 @@ const userSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+
     email: {
       type: String,
       required: true,
@@ -15,12 +15,18 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
+
     password: {
       type: String,
-      required: true, // this will store the HASHED password, never the plain text
+      required: true,
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  },
 );
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model(
+  "User",
+  userSchema,
+);

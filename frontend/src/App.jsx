@@ -1,12 +1,12 @@
-import { Routes, Route, Navigate } from "react-router-dom";
 import { useState } from "react";
-import Login from "./pages/Login.jsx";
-import Register from "./pages/Register.jsx";
-import Dashboard from "./pages/Dashboard.jsx";
-import Editor from "./pages/Editor.jsx";
+import { Navigate, Route, Routes } from "react-router-dom";
+
+import Dashboard from "./pages/Dashboard";
+import Editor from "./pages/Editor";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
-  // Keep track of whether the user is logged in by checking localStorage
   const [user, setUser] = useState(() => {
     const savedUser = localStorage.getItem("user");
     return savedUser ? JSON.parse(savedUser) : null;
@@ -15,12 +15,14 @@ function App() {
   function handleLogin(userData, token) {
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(userData));
+
     setUser(userData);
   }
 
   function handleLogout() {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+
     setUser(null);
   }
 
@@ -28,25 +30,49 @@ function App() {
     <Routes>
       <Route
         path="/login"
-        element={!user ? <Login onLogin={handleLogin} /> : <Navigate to="/" />}
+        element={
+          user ? (
+            <Navigate to="/" />
+          ) : (
+            <Login onLogin={handleLogin} />
+          )
+        }
       />
+
       <Route
         path="/register"
-        element={!user ? <Register onLogin={handleLogin} /> : <Navigate to="/" />}
+        element={
+          user ? (
+            <Navigate to="/" />
+          ) : (
+            <Register onLogin={handleLogin} />
+          )
+        }
       />
+
       <Route
         path="/"
         element={
           user ? (
-            <Dashboard user={user} onLogout={handleLogout} />
+            <Dashboard
+              user={user}
+              onLogout={handleLogout}
+            />
           ) : (
             <Navigate to="/login" />
           )
         }
       />
+
       <Route
         path="/document/:id"
-        element={user ? <Editor user={user} /> : <Navigate to="/login" />}
+        element={
+          user ? (
+            <Editor user={user} />
+          ) : (
+            <Navigate to="/login" />
+          )
+        }
       />
     </Routes>
   );

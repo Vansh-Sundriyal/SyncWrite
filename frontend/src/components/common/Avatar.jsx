@@ -1,11 +1,13 @@
 function Avatar({ name, size = 46 }) {
-  // Use the first letter of every word to generate initials.
-  const initials = name
-    ?.split(" ")
-    .map((word) => word[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
+  // Generate initials from the user's name.
+  const initials =
+    name
+      ?.trim()
+      .split(" ")
+      .map((word) => word[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2) || "?";
 
   return (
     <div

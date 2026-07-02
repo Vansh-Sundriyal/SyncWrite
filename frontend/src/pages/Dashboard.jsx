@@ -10,10 +10,11 @@ import ProfileModal from "../components/profile/ProfileModal";
 function Dashboard({ user, onLogout }) {
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
-  // Keeps searching responsive without extra backend requests.
+  const [creating, setCreating] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [currentUser, setCurrentUser] = useState(user);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,19 +33,34 @@ function Dashboard({ user, onLogout }) {
   }
 
   async function handleCreate() {
+    if (creating) return;
+
+    setCreating(true);
+
     try {
-      const res = await api.post("/documents", { title: "Untitled Document" });
+      const res = await api.post("/documents", {
+        title: "Untitled Document",
+      });
+
       navigate(`/document/${res.data._id}`);
     } catch (err) {
       console.error(err);
+    } finally {
+      setCreating(false);
     }
   }
 
   async function handleDelete(id) {
-    if (!window.confirm("Delete this document? This can't be undone.")) return;
+    if (!window.confirm("Delete this document? This can't be undone.")) {
+      return;
+    }
+
     try {
       await api.delete(`/documents/${id}`);
-      setDocuments(documents.filter((doc) => doc._id !== id));
+
+      setDocuments((prev) =>
+        prev.filter((doc) => doc._id !== id),
+      );
     } catch (err) {
       alert(err.response?.data?.message || "Could not delete document.");
     }
@@ -57,14 +73,15 @@ function Dashboard({ user, onLogout }) {
       });
 
       setDocuments((prev) =>
-        prev.map((doc) => (doc._id === id ? res.data : doc)),
+        prev.map((doc) =>
+          doc._id === id ? res.data : doc,
+        ),
       );
     } catch (err) {
       alert(err.response?.data?.message || "Could not rename document.");
     }
   }
 
-  // Display last edited time.
   function formatRelativeDate(dateString) {
     const date = new Date(dateString);
     const now = new Date();
@@ -75,18 +92,23 @@ function Dashboard({ user, onLogout }) {
 
     if (minutes < 1) return "Edited just now";
 
-    if (minutes < 60)
+    if (minutes < 60) {
       return `Edited ${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+    }
 
     const hours = Math.floor(minutes / 60);
 
-    if (hours < 24) return `Edited ${hours} hour${hours > 1 ? "s" : ""} ago`;
+    if (hours < 24) {
+      return `Edited ${hours} hour${hours > 1 ? "s" : ""} ago`;
+    }
 
     const days = Math.floor(hours / 24);
 
     if (days === 1) return "Edited yesterday";
 
-    if (days < 7) return `Edited ${days} days ago`;
+    if (days < 7) {
+      return `Edited ${days} days ago`;
+    }
 
     return `Edited ${date.toLocaleDateString(undefined, {
       month: "short",
@@ -95,7 +117,6 @@ function Dashboard({ user, onLogout }) {
     })}`;
   }
 
-  // Filter documents on the client for a smooth search experience.
   const filteredDocuments = documents.filter((doc) =>
     doc.title.toLowerCase().includes(searchQuery.toLowerCase()),
   );
@@ -103,7 +124,6 @@ function Dashboard({ user, onLogout }) {
   return (
     <div className="dashboard">
       <div className="dashboard-shell">
-        {/* Top navigation */}
         <DashboardHeader
           user={currentUser}
           onLogout={onLogout}
@@ -111,10 +131,11 @@ function Dashboard({ user, onLogout }) {
         />
 
         <main className="dashboard-main">
-          {/* Quick overview */}
-          <DashboardStats documents={documents} userId={currentUser.id} />
+          <DashboardStats
+            documents={documents}
+            userId={currentUser.id}
+          />
 
-          {/* Documents section */}
           <section className="documents-section">
             <div className="dashboard-toolbar">
               <div className="dashboard-toolbar-left">
@@ -126,14 +147,25 @@ function Dashboard({ user, onLogout }) {
                 </p>
               </div>
 
-              <button className="primary-btn" onClick={handleCreate}>
-                + New Document
+              <button
+                className="primary-btn"
+                onClick={handleCreate}
+                disabled={creating}
+              >
+                {creating ? "Creating..." : "+ New Document"}
               </button>
             </div>
 
-            <SearchBar value={searchQuery} onChange={setSearchQuery} />
+            <SearchBar
+              value={searchQuery}
+              onChange={setSearchQuery}
+            />
 
-            {loading && <p className="muted">Loading your documents...</p>}
+            {loading && (
+              <p className="muted">
+                Loading your documents...
+              </p>
+            )}
 
             {!loading &&
               filteredDocuments.length === 0 &&
@@ -150,7 +182,9 @@ function Dashboard({ user, onLogout }) {
 
                   <h3>No matching documents</h3>
 
-                  <p className="muted">Try searching with another keyword.</p>
+                  <p className="muted">
+                    Try searching with another keyword.
+                  </p>
                 </div>
               )}
 
@@ -170,6 +204,7 @@ function Dashboard({ user, onLogout }) {
             )}
           </section>
         </main>
+
         {showProfileModal && (
           <ProfileModal
             user={currentUser}

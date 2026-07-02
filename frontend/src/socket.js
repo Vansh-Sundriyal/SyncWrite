@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 
-// Creates a new socket connection for each editor instance.
+// Create a socket connection for the editor.
 export function createSocket() {
   const token = localStorage.getItem("token");
 
