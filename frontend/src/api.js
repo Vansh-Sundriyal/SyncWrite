@@ -2,7 +2,7 @@ import axios from "axios";
 
 // All our backend routes live under this base URL
 const api = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 // Before every request, attach the saved login token (if we have one)
