@@ -16,12 +16,17 @@ const server = http.createServer(app);
 // Allow our React app (running on a different port) to talk to this server
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_URL,
     methods: ["GET", "POST"],
   },
 });
 
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // ---------- REST API routes ----------

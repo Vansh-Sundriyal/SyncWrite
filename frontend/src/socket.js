@@ -2,10 +2,8 @@ import { io } from "socket.io-client";
 
 // Creates a fresh socket connection, sending our login token along
 // so the server can verify who we are.
-export function createSocket() {
-  const token = localStorage.getItem("token");
+const socket = io(import.meta.env.VITE_SOCKET_URL, {
+  autoConnect: false,
+});
 
-  return io("http://localhost:5000", {
-    auth: { token },
-  });
-}
+export default socket;
