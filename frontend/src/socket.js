@@ -1,9 +1,13 @@
 import { io } from "socket.io-client";
 
-// Creates a fresh socket connection, sending our login token along
-// so the server can verify who we are.
-const socket = io(import.meta.env.VITE_SOCKET_URL, {
-  autoConnect: false,
-});
+// Creates a new socket connection for each editor instance.
+export function createSocket() {
+  const token = localStorage.getItem("token");
 
-export default socket;
+  return io(import.meta.env.VITE_SOCKET_URL, {
+    autoConnect: false,
+    auth: {
+      token,
+    },
+  });
+}
