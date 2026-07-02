@@ -1,9 +1,25 @@
 import { useNavigate } from "react-router-dom";
 
-function DocumentListItem({ document, userId, formatDate, onDelete }) {
+function DocumentListItem({
+  document,
+  userId,
+  formatDate,
+  onDelete,
+  onRename,
+}) {
   const navigate = useNavigate();
 
   const isOwner = document.owner?._id === userId;
+
+  function handleRename() {
+    const newTitle = prompt("Rename document", document.title);
+
+    if (!newTitle) return;
+
+    if (newTitle.trim() === "") return;
+
+    onRename(document._id, newTitle.trim());
+  }
 
   return (
     <article
@@ -33,9 +49,14 @@ function DocumentListItem({ document, userId, formatDate, onDelete }) {
         <span className="document-date">{formatDate(document.updatedAt)}</span>
       </div>
 
-      {/* Actions appear on the right */}
+      {/* Right side actions */}
       <div className="document-actions" onClick={(e) => e.stopPropagation()}>
-        <button className="icon-btn" title="Open">
+        {/* Open */}
+        <button
+          className="icon-btn"
+          title="Open"
+          onClick={() => navigate(`/document/${document._id}`)}
+        >
           <lord-icon
             src="https://cdn.lordicon.com/tsrgicte.json"
             trigger="hover"
@@ -48,7 +69,8 @@ function DocumentListItem({ document, userId, formatDate, onDelete }) {
 
         {isOwner && (
           <>
-            <button className="icon-btn" title="Rename">
+            {/* Rename */}
+            <button className="icon-btn" title="Rename" onClick={handleRename}>
               <lord-icon
                 src="https://cdn.lordicon.com/exymduqj.json"
                 trigger="hover"
@@ -59,10 +81,14 @@ function DocumentListItem({ document, userId, formatDate, onDelete }) {
               />
             </button>
 
+            {/* Delete */}
             <button
-              className="icon-btn "
+              className="icon-btn"
               title="Delete"
-              onClick={() => onDelete(document._id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete(document._id);
+              }}
             >
               <lord-icon
                 src="https://cdn.lordicon.com/jzinekkv.json"

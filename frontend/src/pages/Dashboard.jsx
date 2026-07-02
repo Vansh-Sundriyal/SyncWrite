@@ -50,6 +50,20 @@ function Dashboard({ user, onLogout }) {
     }
   }
 
+  async function handleRename(id, newTitle) {
+    try {
+      const res = await api.put(`/documents/${id}`, {
+        title: newTitle,
+      });
+
+      setDocuments((prev) =>
+        prev.map((doc) => (doc._id === id ? res.data : doc)),
+      );
+    } catch (err) {
+      alert(err.response?.data?.message || "Could not rename document.");
+    }
+  }
+
   // Display last edited time.
   function formatRelativeDate(dateString) {
     const date = new Date(dateString);
@@ -149,6 +163,7 @@ function Dashboard({ user, onLogout }) {
                     userId={currentUser.id}
                     formatDate={formatRelativeDate}
                     onDelete={handleDelete}
+                    onRename={handleRename}
                   />
                 ))}
               </div>

@@ -72,6 +72,15 @@ function Editor({ user }) {
     const socket = createSocket();
     socketRef.current = socket;
 
+    // Open the Socket.IO connection.
+    socket.connect();
+    socket.on("connect", () => {
+      console.log("✅ Socket connected:", socket.id);
+    });
+
+    socket.on("connect_error", (err) => {
+      console.error("❌ Socket error:", err.message);
+    });
     socket.emit("join-document", id);
 
     socket.on("load-document", (content) => {
